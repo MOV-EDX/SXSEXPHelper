@@ -1,6 +1,6 @@
 # SXSEXPHelper
 SXSEXPHelper is a very simple wrapper to automate building SFCFix fix batches which involve decompressing payload files from WinSxS. This is not an automated repair tool
-and should not be used by those who understand the internal mechanisms of Windows Update.
+and should not be used by those who do not understand the internal mechanisms of Windows Update.
 
 Instructions:
 
