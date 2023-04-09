@@ -4,7 +4,6 @@ and should not be used by those who understand the internal mechanisms of Window
 
 Instructions:
 
-You will need to ensure that SXSEXP has been named to sxsexp64; this is the default name when you download the .exe from the project page. The files you wish to decompress
-should remain in their corresponding directories and be in the same directory as SXSEXPHelper.exe. The application simply needs to executed and it will do the rest for you.
+You will need to ensure that SXSEXP has been named to sxsexp64; this is the default name when you download the .exe from the project page. The files you wish to decompress should remain in their corresponding directories and be in the same directory as SXSEXPHelper.exe along with sxsexp64.exe. The application simply needs to executed and it will do the rest for you.
 
 SXSEXP: https://github.com/hfiref0x/SXSEXP
