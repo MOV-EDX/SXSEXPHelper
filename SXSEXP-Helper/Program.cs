@@ -11,7 +11,6 @@ namespace SXSEXP_Helper
             Console.WriteLine("SXSEXPHelper version 1.0.1\n");
             Console.WriteLine("Processing directories and files, please wait...");
 
-            DirectoryInfo Destination;
             string Source = Directory.GetCurrentDirectory();
             DirectoryInfo SFCFixDirectory = Directory.CreateDirectory(@$"{Source}\SFCFix");
 
