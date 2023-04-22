@@ -8,14 +8,15 @@ namespace SXSEXP_Helper
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("SXSEXPHelper version 1.0.1\n");
+            Console.WriteLine("SXSEXPHelper version 1.1.0\n");
             Console.WriteLine("Processing directories and files, please wait...");
 
             string Source = Directory.GetCurrentDirectory();
             DirectoryInfo SFCFixDirectory = Directory.CreateDirectory(@$"{Source}\SFCFix");
 
             StringBuilder builder = new StringBuilder("::\n");
-            builder.AppendLine(@"{ARCHIVE} %systemroot%\WinSxS [DIR]");
+            builder.AppendLine(@"{ARCHIVE}\WinSxS %systemroot%\WinSxS [DIR]");
+            builder.AppendLine(@"{ARCHIVE}\Manifests %systemroot%\WinSxS\Manifests [DIR]");
 
             await File.WriteAllTextAsync(@$"{SFCFixDirectory.FullName}\SFCFix.txt", builder.ToString());
 
@@ -29,7 +30,9 @@ namespace SXSEXP_Helper
                     string file = segments[length - 1];
                     string file_dir = segments[length - 2];
 
-                    DirectoryInfo child_directory = Directory.CreateDirectory($@"{SFCFixDirectory.FullName}\{file_dir}");
+                    string child_dir = directory.Contains("Manifests") ? "Manifests" : "WinSxS";
+
+                    DirectoryInfo child_directory = directory.Contains("Manifests") ? Directory.CreateDirectory($@"{SFCFixDirectory.FullName}\{child_dir}") : Directory.CreateDirectory($@"{SFCFixDirectory.FullName}\{child_dir}\{file_dir}");
                     string[] arguments = new string[] { @$"{path}", $@"{child_directory.FullName}\{file}" };
 
                     //TODO: Import SXSEXP directly
@@ -40,11 +43,12 @@ namespace SXSEXP_Helper
             }
 
             //Clean up any empty directories
-            foreach (string directory_name in Directory.EnumerateDirectories(SFCFixDirectory.FullName))
+            foreach (string directory_name in Directory.EnumerateDirectories(SFCFixDirectory.FullName, "*", SearchOption.AllDirectories))
             {
-                DirectoryInfo directory =  Directory.CreateDirectory(directory_name);
+                //Gets file handle to directory object
+                DirectoryInfo directory = Directory.CreateDirectory(directory_name);
 
-                if (directory.GetFiles().Length == 0) directory.Delete();
+                if (directory.GetFiles("*", SearchOption.AllDirectories).Length == 0) directory.Delete();
             }
 
             ZipFile.CreateFromDirectory(SFCFixDirectory.FullName, @$"{Source}\SFCFix.zip", CompressionLevel.Optimal, false);
