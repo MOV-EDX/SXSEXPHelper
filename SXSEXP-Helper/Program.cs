@@ -8,11 +8,13 @@ namespace SXSEXP_Helper
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("SXSEXPHelper version 1.1.0\n");
+            Console.WriteLine("SXSEXPHelper version 1.1.1\n");
             Console.WriteLine("Processing directories and files, please wait...");
 
             string Source = Directory.GetCurrentDirectory();
             DirectoryInfo SFCFixDirectory = Directory.CreateDirectory(@$"{Source}\SFCFix");
+
+            if (File.Exists(@$"{Source}\SFCFix.zip")) File.Delete(@$"{Source}\SFCFix.zip");
 
             StringBuilder builder = new StringBuilder("::\n");
             builder.AppendLine(@"{ARCHIVE}\WinSxS %systemroot%\WinSxS [DIR]");
@@ -20,7 +22,7 @@ namespace SXSEXP_Helper
 
             await File.WriteAllTextAsync(@$"{SFCFixDirectory.FullName}\SFCFix.txt", builder.ToString());
 
-            foreach (string directory in Directory.EnumerateDirectories(Source))
+            foreach (string directory in Directory.EnumerateDirectories(Source).Except(new string[] { SFCFixDirectory.FullName }))
             {
                 foreach (string path in Directory.EnumerateFiles(directory))
                 {
